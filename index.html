@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IKROM WALIDAINI — Sistem Keamanan & Pemeliharaan Jaringan</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, 'Courier New', monospace;
+        }
+
+        :root {
+            --biru-terang: #00ccff;
+            --biru: #0066ff;
+            --biru-gelap: #003399;
+            --hijau: #00ff88;
+            --hijau-pudar: #00cc66;
+            --abu-terang: #e0e7ff;
+            --abu: #94a3b8;
+        }
+
+        body {
+            min-height: 100vh;
+            background: url('panel.png') no-repeat center center fixed;
+            background-size: cover;
+            color: var(--abu-terang);
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(
+                135deg,
+                rgba(0, 10, 40, 0.92) 0%,
+                rgba(0, 30, 80, 0.85) 50%,
+                rgba(0, 10, 40, 0.92) 100%
+            );
+            z-index: 1;
+        }
+
+        .latar-partikel {
+            position: fixed;
+            inset: 0;
+            z-index: 2;
+            pointer-events: none;
+        }
+        .titik {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: var(--biru-terang);
+            border-radius: 50%;
+            box-shadow: 0 0 6px var(--biru-terang);
+            animation: melayang 12s linear infinite;
+        }
+        @keyframes melayang {
+            0% { transform: translateY(100vh) scale(0.5); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-10vh) scale(1.5); opacity: 0; }
+        }
+
+        .wadah-utama {
+            position: relative;
+            z-index: 3;
+            padding: 20px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .kepala {
+            text-align: center;
+            padding: 30px 20px;
+            margin-bottom: 30px;
+            border-bottom: 1px solid rgba(0, 204, 255, 0.2);
+        }
+
+        .logo-sistem {
+            font-size: 14px;
+            color: var(--biru-terang);
+            letter-spacing: 3px;
+            margin-bottom: 10px;
+        }
+
+        h1 {
+            font-size: clamp(1.8rem, 5vw, 3rem);
+            color: #fff;
+            margin-bottom: 10px;
+        }
+
+        h1 span {
+            background: linear-gradient(90deg, var(--biru-terang), var(--hijau), var(--biru-terang));
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: cahayaJalan 4s linear infinite;
+        }
+        @keyframes cahayaJalan {
+            0% { background-position: 0% center; }
+            100% { background-position: 200% center; }
+        }
+
+        .sub-judul {
+            font-size: 1.1rem;
+            color: var(--abu);
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.7;
+        }
+
+        .kaca {
+            background: rgba(0, 50, 120, 0.25);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(0, 204, 255, 0.2);
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 32px rgba(0, 102, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        .kaca:hover {
+            border-color: rgba(0, 204, 255, 0.4);
+            box-shadow: 0 12px 40px rgba(0, 102, 255, 0.2);
+            transform: translateY(-3px);
+        }
+
+        h2 {
+            color: var(--biru-terang);
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.3rem;
+        }
+
+        .galeri-foto {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .foto-kartu {
+            border-radius: 12px;
+            overflow: hidden;
+            border: 2px solid rgba(0, 204, 255, 0.2);
+            transition: all 0.4s ease;
+            background: rgba(0, 0, 0, 0.3);
+        }
+        .foto-kartu:hover {
+            transform: scale(1.02);
+            border-color: var(--hijau);
+            box-shadow: 0 0 25px rgba(0, 255, 136, 0.25);
+        }
+        .foto-kartu img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            display: block;
+        }
+        .foto-keterangan {
+            padding: 12px;
+            text-align: center;
+            color: var(--abu-terang);
+            font-weight: 500;
+        }
+
+        .grid-layanan {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 18px;
+        }
+
+        .layanan-kartu {
+            background: rgba(0, 80, 160, 0.15);
+            border: 1px solid rgba(0, 204, 255, 0.1);
+            border-radius: 12px;
+            padding: 18px;
+            transition: all 0.3s ease;
+        }
+        .layanan-kartu:hover {
+            background: rgba(0, 100, 200, 0.2);
+            border-color: var(--biru-terang);
+            transform: translateX(5px);
+        }
+
+        .layanan-kartu h3 {
+            color: #fff;
+            margin-bottom: 8px;
+            font-size: 1rem;
+        }
+
+        .layanan-kartu p {
+            color: var(--abu);
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .daftar-spesifikasi {
+            list-style: none;
+            display: grid;
+            gap: 10px;
+        }
+
+        .daftar-spesifikasi li {
+            padding: 10px 12px;
+            background: rgba(0, 80, 160, 0.1);
+            border-radius: 6px;
+            border-left: 3px solid var(--hijau);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .label { color: var(--abu); }
+        .nilai { color: var(--hijau); font-weight: 600; }
+
+        .status-indikator {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--hijau);
+        }
+        .titik-aktif {
+            width: 8px;
+            height: 8px;
+            background: var(--hijau);
+            border-radius: 50%;
+            animation: kedip 1.2s infinite;
+        }
+        @keyframes kedip {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        .kontak-baris {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .kontak-item {
+            padding: 12px;
+            background: rgba(0, 80, 160, 0.1);
+            border-radius: 8px;
+        }
+        .kontak-item strong {
+            color: #fff;
+            display: block;
+            margin-bottom: 4px;
+        }
+        .kontak-item span {
+            color: var(--abu);
+            font-size: 0.9rem;
+        }
+
+        .kaki-halaman {
+            text-align: center;
+            padding: 25px;
+            margin-top: 20px;
+            border-top: 1px solid rgba(0, 204, 255, 0.15);
+            color: var(--abu);
+            font-size: 0.9rem;
+        }
+
+        .tombol-wa {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 12px 25px;
+            background: linear-gradient(90deg, #00c853, #00e676);
+            color: #fff !important;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        .tombol-wa:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 20px rgba(0, 200, 83, 0.3);
+        }
+    </style>
+</head>
+<body>
+
+<div class="latar-partikel" id="partikel"></div>
+
+<div class="wadah-utama">
+    <header class="kepala">
+        <div class="logo-sistem">NETWORK · SECURITY · MAINTENANCE</div>
+        <h1><span>IKROM WALIDAINI</span></h1>
+        <p class="sub-judul">Sistem Keamanan & Pemeliharaan Jaringan — Instalasi Perangkat Lengkap & Terintegrasi</p>
+    </header>
+
+    <section class="kaca">
+        <h2>📸 Dokumentasi Karya Saya</h2>
+        <p style="margin-bottom: 10px; color: var(--abu);">Bukti nyata hasil kerja & peralatan yang saya kelola</p>
+        <div class="galeri-foto">
+            <div class="foto-kartu">
+                <img src="laptop.png" alt="Tempat Kerja & Pengembangan Sistem">
+                <div class="foto-keterangan">💻 Tempat Kerja — Pengembangan & Pemantauan</div>
+            </div>
+            <div class="foto-kartu">
+                <img src="panel.png" alt="Panel Perangkat Jaringan Terpasang">
+                <div class="foto-keterangan">🖥️ Panel Sistem — Instalasi Lengkap</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="kaca">
+        <h2>📡 Tentang Instalasi Ini</h2>
+        <p style="margin-bottom: 15px; line-height: 1.7;">
+            Instalasi perangkat jaringan lengkap milik <strong>Ikrom Walidaini</strong> — dibangun untuk menjamin kestabilan, kecepatan, dan keamanan koneksi dari sumber hingga perangkat pengguna. Menggabungkan perangkat kelas profesional dengan tata letak rapi, terstruktur, dan siap dikembangkan.
+        </p>
+        <ul class="daftar-spesifikasi">
+            <li><span class="label">Pemilik Sistem</span><span class="nilai">Ikrom Walidaini</span></li>
+            <li><span class="label">Lokasi</span><span class="nilai">Tegal / Slawi, Jawa Tengah</span></li>
+            <li><span class="label">Status Operasi</span><span class="nilai status-indikator"><span class="titik-aktif"></span> Berjalan Normal</span></li>
+            <li><span class="label">Teknologi Inti</span><span class="nilai">MikroTik · Fiber · Manajemen Terpusat</span></li>
+        </ul>
+    </section>
+
+    <section class="kaca">
+        <h2>🔧 Perangkat yang Dipasang</h2>
+        <div class="grid-layanan">
+            <div class="layanan-kartu">
+                <h3>🖥️ Router Utama MikroTik</h3>
+                <p>Otak pengatur seluruh lalu lintas data — pembagian kecepatan, pemantauan pelanggan, keamanan jaringan.</p>
+            </div>
+            <div class="layanan-kartu">
+                <h3>🔌 Switch & Manajemen Kabel</h3>
+                <p>Penyebaran koneksi terstruktur — kabel tertata rapi, mudah dilacak, cepat diperbaiki jika ada gangguan.</p>
+            </div>
+            <div class="layanan-kartu">
+                <h3>🛡️ Sistem Keamanan NL200x</h3>
+                <p>Gerbang pelindung jaringan — penyaringan akses, pemblokiran ancaman, pemantauan aktivitas mencurigakan.</p>
+            </div>
+            <div class="layanan-kartu">
+                <h3>⚡ Pengatur Daya PDU & UPS</h3>
+                <p>Pasokan listrik terjaga — saat mati lampu, sistem tetap menyala. Perlindungan dari lonjakan arus & petir.</p>
+            </div>
+            <div class="layanan-kartu">
+                <h3>📊 Pemantauan Real-Time</h3>
+                <p>Layar status menampilkan beban CPU, memori, kecepatan internet, jumlah perangkat yang terhubung.</p>
+            </div>
+            <div class="layanan-kartu">
+                <h3>💻 Stasiun Kerja & Pengembangan</h3>
+                <p>Pemrograman, konfigurasi, pemantauan — semua dikembangkan langsung dari tempat kerja saya.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="kaca">
+        <h2>🌐 Layanan Saya</h2>
+        <div class="grid-layanan">
+            <div class="layanan-kartu">
+                <h3>✅ Pemasangan Jaringan Baru</h3>
+                <p>Survei lokasi → rancangan → pasang → uji coba → serah terima. Mulai dari nol sampai nyala.</p>
+            </div>
+            <div class="layanan-kartu">
+                <h3>✅ Pemeliharaan Berkala</h3>
+                <p>Pengecekan rutin, pembersihan, pembaruan sistem, cadangan pengaturan — agar awet & stabil.</p>
+            </div>
+            <div class="layanan-kartu">
+                <h3>✅ Perbaikan & Penyelesaian Gangguan</h3>
+                <p>Internet lambat? Putus-putus? Dilacak penyebabnya, diperbaiki, diuji sampai lancar kembali.</p>
+            </div>
+            <div class="layanan-kartu">
+                <h3>✅ Pengaturan Keamanan Jaringan</h3>
+                <p>Pemblokiran akses asing, sandi kuat, pemisahan jaringan tamu, perlindungan dari serangan luar.</p>
+            </div>
+            <div class="layanan-kartu">
+                <h3>✅ Perluasan Jangkauan</h3>
+                <p>Tambah pelanggan, pasang pemancar baru, tarik kabel, sambungkan titik yang belum terjangkau.</p>
+            </div>
+            <div class="layanan-kartu">
+                <h3>✅ Pembuatan Website & Aplikasi</h3>
+                <p>Selain jaringan — saya juga bikin website, sistem pantauan, dan aplikasi khusus untuk kebutuhanmu.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="kaca">
+        <h2>📞 Hubungi Saya</h2>
+        <p style="margin-bottom: 15px;">Butuh instalasi jaringan, website, atau konsultasi? Siap melayani!</p>
+        <div class="kontak-baris">
+            <div class="kontak-item">
+                <strong>💬 WhatsApp</strong>
+                <span>0895-4112-39265</span>
+            </div>
+            <div class="kontak-item">
+                <strong>📧 Email</strong>
+                <span>ikromwalidaini60@gmail.com</span>
+            </div>
+            <div class="kontak-item">
+                <strong>📍 Lokasi</strong>
+                <span>Tegal / Slawi, Jawa Tengah</span>
+            </div>
+            <div class="kontak-item">
+                <strong>👤 Pemilik</strong>
+                <span>Ikrom Walidaini</span>
+            </div>
+        </div>
+        <a href="https://wa.me/62895411239265" target="_blank" class="tombol-wa">💬 Kirim Pesan WhatsApp</a>
+    </section>
+
+    <footer class="kaki-halaman">
+        <p>© 2026 Ikrom Walidaini — Sistem Keamanan & Pemeliharaan Jaringan</p>
+        <p style="margin-top: 5px; font-size: 0.85rem;">Instalasi · Konfigurasi · Pemeliharaan · Pengembangan Digital</p>
+    </footer>
+</div>
+
+<script>
+    const wadahPartikel = document.getElementById('partikel');
+    const jumlahTitik = 40;
+    for (let i = 0; i < jumlahTitik; i++) {
+        const titik = document.createElement('div');
+        titik.className = 'titik';
+        const ukuran = Math.random() * 3 + 1;
+        titik.style.width = ukuran + 'px';
+        titik.style.height = ukuran + 'px';
+        titik.style.left = Math.random() * 100 + '%';
+        titik.style.animationDelay = Math.random() * 12 + 's';
+        titik.style.animationDuration = (Math.random() * 8 + 10) + 's';
+        wadahPartikel.appendChild(titik);
+    }
+</script>
+
+</body>
+</html>
